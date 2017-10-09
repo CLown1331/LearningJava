@@ -26,9 +26,13 @@ package tictactoe;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -42,30 +46,81 @@ public class GUI extends JFrame {
     
     private void InitGUI() {
         JButton[] boardButtons = new JButton[9];
+        
         JButton menuButtonNewGame = new JButton( "New Game" );
         JButton menuButtonAbout = new JButton( "About" );
         JButton menuButtonQuit = new JButton( "Quit" );
         
-        JPanel cards = new JPanel( new CardLayout() );
+        JButton aboutBack = new JButton( "Back" );
+                
+        JLabel About = new JLabel( "Developed by: Araf Al-Jami" );
+                
+        CardLayout cardLayout = new CardLayout();
+        
+        JPanel cards = new JPanel( cardLayout );
         JPanel menu = new JPanel();
+        JPanel about = new JPanel();
         JPanel board = new JPanel( new GridLayout( 3, 3 ) );
         
         menu.setLayout( new BoxLayout( menu, BoxLayout.Y_AXIS ) );
+        about.setLayout( new BoxLayout( about, BoxLayout.Y_AXIS ) );
         
         menuButtonNewGame.setAlignmentX( Component.CENTER_ALIGNMENT );
         menuButtonAbout.setAlignmentX( Component.CENTER_ALIGNMENT );
         menuButtonQuit.setAlignmentX( Component.CENTER_ALIGNMENT );
         
+        aboutBack.setAlignmentX( Component.CENTER_ALIGNMENT );
+        About.setAlignmentX( Component.CENTER_ALIGNMENT );
+        
+        menuButtonNewGame.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                cardLayout.show( cards, "board" );
+            } 
+        });
+        
+        menuButtonAbout.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                cardLayout.show( cards, "about" );
+            } 
+        });
+        
+        menuButtonQuit.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                System.exit( 0 );
+            } 
+        });
+        
+        aboutBack.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                cardLayout.show( cards, "menu" );
+            } 
+        });
+        
+        menu.add( Box.createVerticalGlue() );
         menu.add( menuButtonNewGame );
+        menu.add( Box.createVerticalGlue() );
         menu.add( menuButtonAbout );
+        menu.add( Box.createVerticalGlue() );
         menu.add( menuButtonQuit );
+        menu.add( Box.createVerticalGlue() );
+        
+        about.add( Box.createVerticalGlue() );
+        about.add( About );
+        about.add( Box.createVerticalGlue() );
+        about.add( aboutBack );
+        about.add( Box.createVerticalGlue() );
         
         for( int i=0; i<9; i++ ) {
             boardButtons[i] = new JButton( "" );
             board.add( boardButtons[i] );
         }
         
+        cardLayout.addLayoutComponent( menu, "menu" );
+        cardLayout.addLayoutComponent( board, "board" );
+        cardLayout.addLayoutComponent( about, "about" );
+        
         cards.add( menu );
+        cards.add( about );
         cards.add( board );
         
         add( cards );
