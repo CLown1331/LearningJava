@@ -52,6 +52,9 @@ public class GUI extends JFrame {
     
     private void InitGUI() {
         JButton[] boardButtons = new JButton[9];
+        JButton boardReset = new JButton( "Reset" );
+        JButton boardBack = new JButton( "Back" );
+        JButton boardQuit = new JButton( "Quit" );
         
         JButton menuButtonNewGame = new JButton( "New Game" );
         JButton menuButtonAbout = new JButton( "About" );
@@ -70,7 +73,7 @@ public class GUI extends JFrame {
         JPanel cards = new JPanel( cardLayout );
         JPanel menu = new JPanel();
         JPanel about = new JPanel();
-        JPanel board = new JPanel( new GridLayout( 3, 3 ) );
+        JPanel board = new JPanel( new GridLayout( 4, 3 ) );
         JPanel gameType = new JPanel();
         
         menu.setLayout( new BoxLayout( menu, BoxLayout.Y_AXIS ) );
@@ -114,7 +117,12 @@ public class GUI extends JFrame {
         
         gameTypeSingle.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
+                for( int i=0; i<9; i++ ) {
+                    boardButtons[i].setEnabled( true );
+                    boardButtons[i].setText( "" );
+                }
                 game.Init();
+                player = 1;
                 game.SetGameType( 1 );
                 cardLayout.show( cards, "board" );
             } 
@@ -122,7 +130,12 @@ public class GUI extends JFrame {
         
         gameTypeTwo.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
+                for( int i=0; i<9; i++ ) {
+                    boardButtons[i].setEnabled( true );
+                    boardButtons[i].setText( "" );
+                }
                 game.Init();
+                player = 1;
                 game.SetGameType( 2 );
                 cardLayout.show( cards, "board" );
             } 
@@ -140,91 +153,168 @@ public class GUI extends JFrame {
         
         boardButtons[0].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[0].setEnabled( false );
-                boardButtons[0].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 0, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 0, player ) ) {
+                    boardButtons[0].setEnabled( false );
+                    boardButtons[0].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[1].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[1].setEnabled( false );
-                boardButtons[1].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 1, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 1, player ) ) {
+                    boardButtons[1].setEnabled( false );
+                    boardButtons[1].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[2].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[2].setEnabled( false );
-                boardButtons[2].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 2, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 2, player ) ) {
+                    boardButtons[2].setEnabled( false );
+                    boardButtons[2].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[3].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[3].setEnabled( false );
-                boardButtons[3].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 3, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 3, player ) ) {
+                    boardButtons[3].setEnabled( false );
+                    boardButtons[3].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[4].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[4].setEnabled( false );
-                boardButtons[4].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 4, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 4, player ) ) {
+                    boardButtons[4].setEnabled( false );
+                    boardButtons[4].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[5].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[5].setEnabled( false );
-                boardButtons[5].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 5, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 5, player ) ) {
+                    boardButtons[5].setEnabled( false );
+                    boardButtons[5].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[6].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[6].setEnabled( false );
-                boardButtons[6].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 6, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 6, player ) ) {
+                    boardButtons[6].setEnabled( false );
+                    boardButtons[6].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[7].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[7].setEnabled( false );
-                boardButtons[7].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 7, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 7, player ) ) {
+                    boardButtons[7].setEnabled( false );
+                    boardButtons[7].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
             } 
         });
         
         boardButtons[8].addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                boardButtons[8].setEnabled( false );
-                boardButtons[8].setText( player == 1 ? "X" : "O" );
-                game.SetBoardState( 8, player );
-                player = player == 1 ? 2 : 1;
-                game.Next();
+                if( game.SetBoardState( 8, player ) ) {
+                    boardButtons[8].setEnabled( false );
+                    boardButtons[8].setText( player == 1 ? "X" : "O" );
+                    player = player == 1 ? 2 : 1;
+                    int ret = game.Next();
+                    if( ret != -1 ) {
+                        player = player == 1 ? 2 : 1;
+                        boardButtons[ret].setText( "O" );
+                        boardButtons[ret].setEnabled( false );
+                    }
+                }
+            } 
+        });
+        
+        boardReset.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                for( int i=0; i<9; i++ ) {
+                    boardButtons[i].setEnabled( true );
+                    boardButtons[i].setText( "" );
+                }
+                game.Init();
+                player = 1;
+            } 
+        });
+               
+        boardBack.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                cardLayout.show( cards, "gameType" );
+            } 
+        });
+        
+        boardQuit.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                System.exit( 0 );
             } 
         });
         
@@ -253,6 +343,10 @@ public class GUI extends JFrame {
         for( int i=0; i<9; i++ ) {
             board.add( boardButtons[i] );
         }
+        
+        board.add( boardReset );
+        board.add( boardBack );
+        board.add( boardQuit );
         
         cardLayout.addLayoutComponent( menu, "menu" );
         cardLayout.addLayoutComponent( board, "board" );

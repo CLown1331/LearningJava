@@ -23,6 +23,7 @@
  */
 package tictactoe;
 
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JOptionPane;
 
 /**
@@ -49,9 +50,6 @@ public class Game {
     }
     
     public int Determine() {
-        if( moveCount == 9 ) {
-            return 3;
-        }
         for( int i=0; i<8; i++ ) {
             if( board[ win_combos[i][0] ] == board[ win_combos[i][1] ]
                                     &&
@@ -64,49 +62,65 @@ public class Game {
                     }
             }
 	}
+        if( moveCount == 9 ) {
+            return 3;
+        }
         return 0;
     }
     
-    public void Next() {
-        if( gameType == 2 ) {
-            int result = Determine();
+    public int Next() {
+            if( gameType == 1 ) {
+                int result = Determine();
             if( result == 1 ) {
-                int input = JOptionPane.showConfirmDialog( null, "Player One Wins!, Play Again?",
-                        "Select an Option...", JOptionPane.YES_NO_OPTION );
-                ProccesGameOver( input );
+                JOptionPane.showMessageDialog( null, "Player One Wins!" );
+                ProccesGameOver();
             }
             else if( result == 2 ) {
-                int input = JOptionPane.showConfirmDialog( null, "Player Two Wins!, Play Again?",
-                        "Select an Option...", JOptionPane.YES_NO_OPTION );
-                ProccesGameOver( input );
+                JOptionPane.showMessageDialog( null, "Player Two Wins!");
+                ProccesGameOver();
             }
             else if( result == 3 ) {
-                int input = JOptionPane.showConfirmDialog( null, "Tie!, Play Again?",
-                        "Select an Option...", JOptionPane.YES_NO_OPTION );
-                ProccesGameOver( input );
+                JOptionPane.showMessageDialog( null, "Tie!");
+                ProccesGameOver();
+            }
+            int returnMove = ComputerMove( 2, 2 );
+            if( returnMove == -1 ) {
+                return -1;
+            }
+            board[returnMove] = 2;
+            return returnMove - 1;
+        }
+        int result = Determine();
+        if( result == 1 ) {
+            JOptionPane.showMessageDialog( null, "Player One Wins!");
+            ProccesGameOver();
+        }
+        else if( result == 2 ) {
+            JOptionPane.showMessageDialog( null, "Player Two Wins!");
+            ProccesGameOver();
+        }
+        else if( result == 3 ) {
+            JOptionPane.showMessageDialog( null, "Tie!");
+            ProccesGameOver();
+        }
+        return -1;
+    }
+    
+    private void ProccesGameOver() {
+        for( int i=0; i<10; i++ ) {
+            if( board[i] == 0 ) {
+                board[i] = 3;
             }
         }
     }
     
-    void ProccesGameOver( int input ) {
-        if( input == 0 ) {
-            Init();
-        }
-        else {
-            for( int i=0; i<10; i++ ) {
-                if( board[i] == 0 ) {
-                    board[i] = 3;
-                }
-            }
-        }
-    }
-    
-    public void SetBoardState( int index, int player ) {
+    public boolean SetBoardState( int index, int player ) {
         if( board[ index + 1 ] != 0 ) {
-            return;
+            return false;
         }
         moveCount++;
         board[ index + 1 ] = player;
+        return true;
     }
     
     public void SetGameType( int gameType ) {
@@ -115,5 +129,81 @@ public class Game {
     
     public int GetGameType() {
         return gameType;
+    }
+    
+    private int ComputerMove( int player , int diffLevel ) {
+	int move = -1;
+	int cmp = player == 1 ? 2 : 1;
+	if( diffLevel == 2 ) {
+		int best = -11;
+		int temp;
+		for( int i=1; i<=9; i++ ) {
+                    if( board[i] == 0 ) {
+                        board[i] = cmp;
+                        moveCount++;
+                        temp = -minimax( player );
+                        board[i] = 0;
+                        moveCount--;
+                        if( temp > best ) {
+                            best = temp;
+                            move = i;
+                        }
+                    }
+		}
+	}
+	else{
+            int pos;
+            while( true ) {
+                pos = ThreadLocalRandom.current().nextInt() % 9 + 1;
+                if( board[pos] != player ) {
+                    move = pos;
+                    break;
+                }
+            }
+	}
+	return move;
+    }
+    
+    private int score( int player ) {
+	int enemy = player == 1 ? 2 : 1;
+	for( int i=0; i<8; i++ ) {
+            if( board[ win_combos[i][0] ] == board[ win_combos[i][1] ]
+                                    &&
+            board[ win_combos[i][1] ] == board[ win_combos[i][2] ] ) {
+                if( board[ win_combos[i][2] ] == player ) {
+                        return 10;
+                } else if( board[ win_combos[i][2] ] == enemy ) {
+                        return -10;
+                }
+            }
+	}
+	return 0;
+    }
+    
+    private int minimax( int player ) {
+	if( moveCount < 9 ) {
+            return score( player );
+	}
+	int enemy = player == 1 ? 2 : 1;
+	int move = -1;
+	int best = -11;
+	int temp;
+	for( int i=1; i<=9; i++ ) {
+            if( board[i] == 0 ) {
+                board[i] = player;
+                moveCount++;
+                temp = -minimax( enemy );
+                board[i] = 0;
+                moveCount--;
+                if( temp > best ) {
+                    best = temp;
+                    move = i;
+                }
+            }
+	}
+	if( move == -1 ) {
+            return 0;
+	}
+	return best;
     }
 }
